@@ -1,0 +1,6 @@
+.idea/
+asyncapi-portal.iml
+
+dist/
+
+node_modules/
