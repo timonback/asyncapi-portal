@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "start": "ts-node --project tsconfig.json ./src/index.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "prettier -c ./src",
     "lint:fix": "prettier -w ./src"
   },
