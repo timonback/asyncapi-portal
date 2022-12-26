@@ -7,11 +7,16 @@ type NodeId = number;
 type NodeRef = { index: NodeId };
 
 interface D3Graph {
-  nodes: { id: NodeId }[];
+  nodes: {
+    id: NodeId;
+    name: string;
+    type: string;
+  }[];
   links: {
     source: NodeRef;
     target: NodeRef;
     type: string;
+    messageType: string;
   }[];
 }
 
@@ -36,6 +41,8 @@ function convertGraphToD3Model(graph: Graph): D3Graph {
       ...nodes,
       {
         id: graph.applications[applicationsKey].id,
+        name: applicationsKey,
+        type: "application",
       },
     ];
   }
@@ -44,6 +51,8 @@ function convertGraphToD3Model(graph: Graph): D3Graph {
       ...nodes,
       {
         id: graph.queues[queuesKey].id,
+        name: queuesKey,
+        type: "queue",
       },
     ];
   }
@@ -57,6 +66,7 @@ function convertGraphToD3Model(graph: Graph): D3Graph {
           source: { index: link.queueId },
           target: { index: link.applicationId },
           type: "publish",
+          messageType: link.messageType,
         },
       ];
     } else if (link.direction === LinkDirection.subscribe) {
@@ -66,6 +76,7 @@ function convertGraphToD3Model(graph: Graph): D3Graph {
           source: { index: link.applicationId },
           target: { index: link.queueId },
           type: "subscribe",
+          messageType: link.messageType,
         },
       ];
     }

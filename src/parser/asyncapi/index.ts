@@ -1,4 +1,4 @@
-import { AsyncAPIDocument, parse } from "@asyncapi/parser";
+import { AsyncAPIDocument, Operation, parse } from "@asyncapi/parser";
 import fs from "fs/promises";
 import {
   Graph,
@@ -118,6 +118,7 @@ async function getLinks(
           applicationId: applications[data.applicationName].id,
           queueId: queues[data.channelName].id,
           direction: LinkDirection.subscribe,
+          messageType: getMessages(data.channel.subscribe()),
         };
       }),
     ...apis
@@ -143,6 +144,7 @@ async function getLinks(
           applicationId: applications[data.applicationName].id,
           queueId: queues[data.channelName].id,
           direction: LinkDirection.publish,
+          messageType: getMessages(data.channel.publish()),
         };
       }),
   ];
@@ -155,4 +157,14 @@ function getApplicationName(api: AsyncAPIDocument): string {
 function getServerUrl(api: AsyncAPIDocument): string {
   // workaround for now
   return api.server(api.serverNames()[0]).url();
+}
+
+function getMessages(operation: Operation): string {
+  if (operation.hasMultipleMessages()) {
+    return operation
+      .messages()
+      .map((message) => message.title())
+      .join(", ");
+  }
+  return operation.message().title();
 }

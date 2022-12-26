@@ -25,6 +25,7 @@ export interface GraphLink {
   applicationId: number;
   queueId: number;
   direction: LinkDirection;
+  messageType: string;
 }
 
 export interface Graph {
