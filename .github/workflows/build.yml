@@ -25,7 +25,7 @@ jobs:
       - run: npm start
 
       - name: Install Pandoc
-        uses: pandoc/actions/setup
+        uses: pandoc/actions/setup@v1
       - name: Prepare gh pages deployment
         run: |
           mkdir _site
