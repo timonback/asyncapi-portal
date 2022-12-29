@@ -23,8 +23,25 @@ jobs:
       - run: npm run build --if-present
       - run: npm test
       - run: npm start
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: output-artifacts
-          path: output
+
+      - name: Prepare gh pages deployment
+        run: |
+          mkdir _site
+          cp README.md _site/
+          cp -r output _site/
+      - name: Upload gh pages artifacts
+        uses: actions/upload-pages-artifact@v1
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
