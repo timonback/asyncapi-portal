@@ -24,11 +24,14 @@ jobs:
       - run: npm test
       - run: npm start
 
+      - name: Install Pandoc
+        uses: pandoc/actions/setup
       - name: Prepare gh pages deployment
         run: |
           mkdir _site
-          cp README.md _site/
           cp -r output _site/
+          
+          pandoc -s -o _site/index.html README.md
       - name: Upload gh pages artifacts
         uses: actions/upload-pages-artifact@v1
 
