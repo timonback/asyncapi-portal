@@ -6,6 +6,18 @@ export async function getFilesInFolder(basePath: string): Promise<string[]> {
   return files.map((file) => basePath + path.sep + file);
 }
 
+export async function getFileContentInFolder(
+  basePath: string
+): Promise<string[]> {
+  return (
+    await Promise.all(
+      (
+        await getFilesInFolder(basePath)
+      ).map((filepath) => fs.readFile(filepath))
+    )
+  ).map((buffer) => buffer.toString());
+}
+
 export async function writeToFile(filepath: string, content: string) {
   await fs.writeFile(filepath, content);
 }

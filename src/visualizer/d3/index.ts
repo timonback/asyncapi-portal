@@ -1,12 +1,10 @@
 import { Graph, LinkDirection } from "../../types/main";
-import fs from "fs/promises";
-import * as path from "path";
-import { writeToFile } from "../../config";
+import { renderD3Html } from "./htmlRenderer";
 
 type NodeId = number;
 type NodeRef = { index: NodeId };
 
-interface D3Graph {
+export interface D3Graph {
   nodes: {
     id: NodeId;
     name: string;
@@ -20,21 +18,21 @@ interface D3Graph {
   }[];
 }
 
-export async function renderD3Html(graph: Graph, htmlD3Path: string) {
-  let template = (
-    await fs.readFile(path.join(__dirname, "template.html"))
-  ).toString();
-
-  const jsCode = (await fs.readFile(path.join(__dirname, "d3.js"))).toString();
-  const data = JSON.stringify(convertGraphToD3Model(graph), undefined, 2);
-
-  template = template.replace('"PLACEHOLDER-CODE"', jsCode);
-  template = template.replace('"PLACEHOLDER-DATA"', data);
-
-  await writeToFile(htmlD3Path, template);
+export interface VisualizerD3Result {
+  graph: D3Graph;
+  html: string;
 }
 
-function convertGraphToD3Model(graph: Graph): D3Graph {
+export async function renderD3(graph: Graph): Promise<VisualizerD3Result> {
+  const d3Graph = convertToD3Model(graph);
+
+  return {
+    graph: d3Graph,
+    html: await renderD3Html(d3Graph),
+  };
+}
+
+export function convertToD3Model(graph: Graph): D3Graph {
   let nodes: D3Graph["nodes"] = [];
   for (let applicationsKey in graph.applications) {
     nodes = [

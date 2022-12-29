@@ -1,5 +1,4 @@
 import { AsyncAPIDocument, Operation, parse } from "@asyncapi/parser";
-import fs from "fs/promises";
 import {
   Graph,
   GraphApplications,
@@ -9,12 +8,13 @@ import {
   LinkDirection,
 } from "../../types/main";
 
-export async function processAsyncApiFiles(files: string[]): Promise<Graph> {
-  const asyncApis = files.map(async (file) => {
-    const fileContent = await fs.readFile(file);
-    return parse(fileContent.toString());
+export async function processAsyncApiFiles(
+  asyncApisAsString: string[]
+): Promise<Graph> {
+  const asyncApis = asyncApisAsString.map((asyncApiAsString) => {
+    console.log(asyncApiAsString);
+    return parse(asyncApiAsString);
   });
-
   const apis = await Promise.all(asyncApis);
   const servers = await getServers(apis);
   const applications = await getApplications(apis);
