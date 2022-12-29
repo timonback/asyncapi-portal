@@ -8,12 +8,14 @@ import {
   LinkDirection,
 } from "../../types/main";
 
+// support browser and node typescript target
+const parser = parse || window.AsyncAPIParser.parse;
+
 export async function processAsyncApiFiles(
   asyncApisAsString: string[]
 ): Promise<Graph> {
   const asyncApis = asyncApisAsString.map((asyncApiAsString) => {
-    console.log(asyncApiAsString);
-    return parse(asyncApiAsString);
+    return parser(asyncApiAsString);
   });
   const apis = await Promise.all(asyncApis);
   const servers = await getServers(apis);

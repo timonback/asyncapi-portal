@@ -1,11 +1,13 @@
-const types = ["publish", "subscribe"];
-const color = d3.scaleOrdinal(types, d3.schemeCategory10);
-const width = 800;
-const height = 600;
+const d3Settings = {
+  types: ["publish", "subscribe"],
+  width: 800,
+  height: 600,
+};
 
-function render(data) {
+const render = function render(data) {
   const links = data.links.map((d) => Object.create(d));
   const nodes = data.nodes.map((d) => Object.create(d));
+  const color = d3.scaleOrdinal(d3Settings.types, d3.schemeCategory10);
 
   const simulation = d3
     .forceSimulation(nodes)
@@ -26,14 +28,19 @@ function render(data) {
   const svg = d3
     .select("#d3Plot")
     .append("svg")
-    .attr("viewBox", [-width / 2, -height / 2, width, height])
+    .attr("viewBox", [
+      -d3Settings.width / 2,
+      -d3Settings.height / 2,
+      d3Settings.width,
+      d3Settings.height,
+    ])
     .style("font", "12px sans-serif");
 
   // Per-type markers, as they don't inherit styles.
   const markers = svg.append("defs");
   markers
     .selectAll("marker")
-    .data(types)
+    .data(d3Settings.types)
     .join("marker")
     .attr("id", (d) => `arrow-${d}`)
     .attr("viewBox", "0 -5 10 10")
@@ -141,7 +148,7 @@ function render(data) {
   // invalidation.then(() => simulation.stop());
 
   return svg.node();
-}
+};
 
 function linkArc(link, nodes) {
   const source = nodes[link.source.index];
@@ -187,3 +194,6 @@ const drag = (simulation) => {
     .on("drag", dragged)
     .on("end", dragended);
 };
+
+window.asyncApiPortal = window.asyncApiPortal || {};
+window.asyncApiPortal.d3Renderer = render;

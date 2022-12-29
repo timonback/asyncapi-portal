@@ -1,5 +1,4 @@
 import { Graph, LinkDirection } from "../../types/main";
-import { renderD3Html } from "./htmlRenderer";
 
 type NodeId = number;
 type NodeRef = { index: NodeId };
@@ -20,7 +19,6 @@ export interface D3Graph {
 
 export interface VisualizerD3Result {
   graph: D3Graph;
-  html: string;
 }
 
 export async function renderD3(graph: Graph): Promise<VisualizerD3Result> {
@@ -28,7 +26,6 @@ export async function renderD3(graph: Graph): Promise<VisualizerD3Result> {
 
   return {
     graph: d3Graph,
-    html: await renderD3Html(d3Graph),
   };
 }
 

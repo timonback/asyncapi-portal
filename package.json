@@ -4,8 +4,10 @@
   "description": "Simple portal to display multiple (connected) asyncapi documentations",
   "main": "src/index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.json",
-    "start": "ts-node --project tsconfig.json ./src/index.ts",
+    "build": "npm run build:browser && npm run build:d3:visualizer",
+    "build:browser": "esbuild src/main.browser.ts --bundle --outfile=output/bundle.browser.js",
+    "build:d3:visualizer": "esbuild src/visualizer/d3/htmlRenderer.template.node.js --bundle --outfile=output/bundle.visualizer.d3.template.js",
+    "start": "ts-node --project tsconfig.json --files src/index.node.ts",
     "test": "jest --passWithNoTests",
     "lint": "prettier -c ./src",
     "lint:fix": "prettier -w ./src"
@@ -15,10 +17,14 @@
   "devDependencies": {
     "jest": "^29.3.1",
     "prettier": "^2.8.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@asyncapi/parser": "^1.17.2"
+    "@asyncapi/parser": "^1.17.2",
+    "esbuild": "^0.16.12",
+    "typescript": "^4.9.4"
+  },
+  "browser": {
+    "@asyncapi/parser": "./node_modules/@asyncapi/parser/dist/bundle.js"
   }
 }
