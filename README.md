@@ -1,8 +1,13 @@
 # AsyncAPI Portal
 
-[![Build](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml/badge.svg)](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml)
+![GitHub](https://img.shields.io/github/license/timonback/asyncapi-portal)
+[![Build](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml)
 
 Display how multiple applications are linked together based on asyncApi documentation files.
+
+*The website offers the best viewing experience and correct links:*
+
+> Website: **[https://timonback.github.io/asyncapi-portal/](https://timonback.github.io/asyncapi-portal/)**
 
 ## Demo
 
