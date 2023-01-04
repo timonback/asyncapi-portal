@@ -1,13 +1,28 @@
 <html>
 <head>
-    <title>D3 demo</title>
+    <title>AsyncApi Portal - Dynamic Renderer</title>
 </head>
 <body>
-<h1>Data demo</h1>
+<a href="https://github.com/timonback/asyncapi-portal" style="float: right; margin: -8px;"><img alt="Fork me on GitHub"
+                                                                                                class="attachment-full size-full"
+                                                                                                data-recalc-dims="1"
+                                                                                                decoding="async"
+                                                                                                height="149"
+                                                                                                loading="lazy"
+                                                                                                src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
+                                                                                                width="149"></a>
+<h1>AsyncApi Portal - Dynamic Renderer</h1>
 <main id="d3Plot"></main>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+
 <script src="bundle.browser.js"></script>
 <script src="bundle.visualizer.d3.template.js"></script>
+<!--
+For non-local builds, these pre-compiled javascript files can be used instead of the two above
+<script src="https://timonback.github.io/asyncapi-portal/output/bundle.browser.js"></script>
+<script src="https://timonback.github.io/asyncapi-portal/output/bundle.visualizer.d3.template.js"></script>
+-->
+
 <script type="text/javascript">
     function fetchYaml(url) {
         return fetch(url)

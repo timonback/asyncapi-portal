@@ -2,6 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/timonback/asyncapi-portal)
 [![Build](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/timonback/asyncapi-portal/actions/workflows/build.yml)
+![GitHub Repo stars](https://img.shields.io/github/stars/timonback/asyncapi-portal?style=social)
 
 Display how multiple applications are linked together based on asyncApi documentation files.
 
@@ -14,17 +15,20 @@ Display how multiple applications are linked together based on asyncApi document
 The demo is build using the asyncApi yaml (json also supported) of multiple applications. Based on those, an internal
 graph is build, which is passed to the renderer (D3.js).
 
-AsyncApi files:
+Based on these AsyncApi files
 
 - [output/asyncapifiles/application-consumer.yaml](output/asyncapifiles/application-consumer.yaml)
 - [output/asyncapifiles/application-producer.yaml](output/asyncapifiles/application-producer.yaml)
 
-(Internal graph): [output/graph.json](output/graph.json)
-
-Renderer:
+an internal [output/graph.json](output/graph.json) is generated, which is rendered by
 
 - [D3 - Dynamic parsing](./output/visualizer.d3.dynamicFetch.html)
 - [D3 - Static](./output/visualizer.d3.static.html)
+
+### StackBlitz [![Open in StackBlitz](https://img.shields.io/static/v1?label=&message=Open%20in%20StackBlitz&color=blue&logo=stackblitz)](https://stackblitz.com/github/timonback/asyncapi-portal?file=README.md)
+
+[StackBlitz](https://stackblitz.com) allows to try out the project within a browser and edit the source code. When
+changing code, remember to re-build via `npm run build` and reload the preview pane.
 
 ## Usage
 
@@ -41,4 +45,3 @@ Use "static", when:
 - the AsyncApi files are private
 - you have a lot of applications
 - you can run a "compile" step
-

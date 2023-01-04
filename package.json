@@ -4,10 +4,12 @@
   "description": "Simple portal to display multiple (connected) asyncapi documentations",
   "main": "src/index.js",
   "scripts": {
-    "build": "npm run build:browser && npm run build:d3:visualizer",
+    "build": "npm run build:browser && npm run build:visualizer:d3 && npm run build:demo",
     "build:browser": "esbuild src/main.browser.ts --bundle --outfile=output/bundle.browser.js",
-    "build:d3:visualizer": "esbuild src/visualizer/d3/htmlRenderer.template.node.js --bundle --outfile=output/bundle.visualizer.d3.template.js",
-    "start": "ts-node --project tsconfig.json --files src/index.node.ts",
+    "build:visualizer:d3": "esbuild src/visualizer/d3/htmlRenderer.template.node.js --bundle --outfile=output/bundle.visualizer.d3.template.js",
+    "build:demo": "ts-node --project tsconfig.json --files src/index.node.ts",
+    "start": "npm run build && npm run start:server",
+    "start:server": "http-server output/",
     "test": "jest --passWithNoTests",
     "lint": "prettier -c ./src",
     "lint:fix": "prettier -w ./src"
@@ -15,6 +17,7 @@
   "author": "Timon Back",
   "license": "MIT",
   "devDependencies": {
+    "http-server": "^14.1.1",
     "jest": "^29.3.1",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1"
