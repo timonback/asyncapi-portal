@@ -1,0 +1,108 @@
+asyncapi: '2.5.0'
+info:
+  title: Billing Service
+  version: 1.0.0
+  description: |
+    Manages everything around billing of orders
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  test:
+    url: kafka://localhost:9092
+    protocol: kafka-secure
+    description: Test broker
+defaultContentType: application/json
+channels:
+  order_created:
+    publish:
+      operationId: processOrder
+      message:
+        $ref: '#/components/messages/OrderCreated'
+  bill_payed:
+    subscribe:
+      operationId: billPayed
+      message:
+        $ref: '#/components/messages/BillPayed'
+components:
+  messages:
+    OrderCreated:
+      name: OrderCreated
+      title: OrderCreatedEvent
+      summary: Processes a new order and generates a billing record
+      payload:
+        $ref: '#/components/schemas/Order'
+    BillPayed:
+      name: BillPayed
+      title: BillPayedEvent
+      summary: The bill for the order was fully paid
+      payload:
+        $ref: '#/components/schemas/BillingRecord'
+  schemas:
+    Order:
+      properties:
+        id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        total:
+          type: number
+          format: float
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float
+    BillingRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BilledItem'
+        total:
+          type: number
+          format: float
+        date:
+          type: string
+          format: date-time
+    BilledItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float

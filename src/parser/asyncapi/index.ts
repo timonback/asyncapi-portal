@@ -7,9 +7,12 @@ import {
   GraphServers,
   LinkDirection,
 } from "../../types/main";
+import { generateSequence } from "../../types/number_sequence";
 
 // support browser and node typescript target
 const parser = parse || window.AsyncAPIParser.parse;
+
+const idGenerator = generateSequence(0, 10000);
 
 export async function processAsyncApiFiles(
   asyncApisAsString: string[]
@@ -41,8 +44,8 @@ async function getServers(apis: AsyncAPIDocument[]): Promise<GraphServers> {
         .flatMap((servers) => Object.values(servers))
         .map((server) => server.url())
     ),
-  ].forEach((value, index) => {
-    servers[value] = { id: index };
+  ].forEach((value) => {
+    servers[value] = { id: idGenerator.next().value };
   });
 
   return servers;
@@ -52,11 +55,9 @@ async function getApplications(
   apis: AsyncAPIDocument[]
 ): Promise<GraphApplications> {
   let applications: GraphApplications = {};
-  [...new Set(apis.map((api) => getApplicationName(api)))].forEach(
-    (value, index) => {
-      applications[value] = { id: index };
-    }
-  );
+  [...new Set(apis.map((api) => getApplicationName(api)))].forEach((value) => {
+    applications[value] = { id: idGenerator.next().value };
+  });
 
   return applications;
 }
@@ -81,9 +82,9 @@ async function getQueues(
         };
       });
     })
-    .forEach((data, index) => {
+    .forEach((data) => {
       queues[data.channelName] = {
-        id: index,
+        id: idGenerator.next().value,
         serverId: servers[data.serverUrl].id,
       };
     });

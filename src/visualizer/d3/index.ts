@@ -47,7 +47,7 @@ export function convertToD3Model(graph: Graph): D3Graph {
       {
         id: graph.queues[queuesKey].id,
         name: queuesKey,
-        type: "queue",
+        type: "topic",
       },
     ];
   }

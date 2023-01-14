@@ -1,0 +1,52 @@
+asyncapi: '2.5.0'
+info:
+  title: Customer Service
+  version: 1.0.0
+  description: |
+    Manages all customer information
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  test:
+    url: kafka://localhost:9092
+    protocol: kafka-secure
+    description: Test broker
+defaultContentType: application/json
+channels:
+  customer_changed:
+    subscribe:
+      operationId: updateCustomerInformation
+      message:
+        $ref: '#/components/messages/CustomerChanged'
+components:
+  messages:
+    CustomerChanged:
+      title: CustomerChangedEvent
+      summary: Information about a customer has changed
+      payload:
+        $ref: '#/components/schemas/Customer'
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+        phone:
+          type: string

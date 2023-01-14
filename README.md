@@ -15,19 +15,15 @@ Display how multiple applications are linked together based on asyncApi document
 The demo is build using the asyncApi yaml (json also supported) of multiple applications. Based on those, an internal
 graph is build, which is passed to the renderer (D3.js).
 
-Based on these AsyncApi files
+Based on AsyncApi files in the repo assets folder an internal [graph.json](output/graph.json) is generated, which is
+rendered by
 
-- [output/asyncapifiles/application-consumer.yaml](output/asyncapifiles/application-consumer.yaml)
-- [output/asyncapifiles/application-producer.yaml](output/asyncapifiles/application-producer.yaml)
-
-an internal [output/graph.json](output/graph.json) is generated, which is rendered by
-
-- [D3 - Dynamic parsing](./output/visualizer.d3.dynamicFetch.html)
-- [D3 - Static](./output/visualizer.d3.static.html)
+- [Demo: D3 - Dynamic parsing](./output/visualizer.d3.dynamicFetch.html)
+- [Demo: D3 - Static](./output/visualizer.d3.static.html)
 
 ### StackBlitz [![Open in StackBlitz](https://img.shields.io/static/v1?label=&message=Open%20in%20StackBlitz&color=blue&logo=stackblitz)](https://stackblitz.com/github/timonback/asyncapi-portal?file=README.md)
 
-[StackBlitz](https://stackblitz.com) allows to try out the project within a browser and edit the source code. When
+[StackBlitz](https://stackblitz.com) allows you to try out the project within a browser and edit the source code. When
 changing code, remember to re-build via `npm run build` and reload the preview pane.
 
 ## Usage

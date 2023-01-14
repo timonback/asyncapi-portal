@@ -1,0 +1,73 @@
+asyncapi: '2.5.0'
+info:
+  title: Order Service
+  version: 1.0.0
+  description: |
+    Manages everything around orders
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  test:
+    url: kafka://localhost:9092
+    protocol: kafka-secure
+    description: Test broker
+defaultContentType: application/json
+channels:
+  customer_changed:
+    publish:
+      operationId: updateCustomerInformation
+      message:
+        $ref: '#/components/messages/CustomerChanged'
+  order_created:
+    subscribe:
+      operationId: createOrder
+      message:
+        $ref: '#/components/messages/OrderCreated'
+components:
+  messages:
+    CustomerChanged:
+      title: CustomerChangedEvent
+      summary: Information about a customer has changed
+      payload:
+        $ref: '#/components/schemas/Customer'
+    OrderCreated:
+      title: OrderCreatedEvent
+      summary: A new order was placed
+      payload:
+        $ref: '#/components/schemas/Order'
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        total:
+          type: number
+          format: float
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float

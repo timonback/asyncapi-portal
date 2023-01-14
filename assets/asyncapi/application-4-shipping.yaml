@@ -1,0 +1,139 @@
+asyncapi: '2.5.0'
+info:
+  title: Shipping Service
+  version: 1.0.0
+  description: |
+    Manages everything around shipping
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  test:
+    url: kafka://localhost:9092
+    protocol: kafka-secure
+    description: Test broker
+defaultContentType: application/json
+channels:
+  customer_changed:
+    publish:
+      operationId: processCustomerChange
+      summary: Information about a customer has changed
+      message:
+        $ref: '#/components/messages/CustomerChanged'
+  bill_payed:
+    publish:
+      operationId: processShipping
+      message:
+        $ref: '#/components/messages/BillPayed'
+  order_shipped:
+    subscribe:
+      operationId: orderShipped
+      message:
+        $ref: '#/components/messages/OrderShipped'
+components:
+  messages:
+    CustomerChanged:
+      title: CustomerChangedEvent
+      summary: Information about a customer has changed
+      payload:
+        $ref: '#/components/schemas/Customer'
+    BillPayed:
+      title: BillPayedEvent
+      summary: Processes a new billing record and generates shipping information
+      payload:
+        $ref: '#/components/schemas/BillingRecord'
+    OrderShipped:
+      title: OrderShippedEvent
+      summary: An order was shipped to the customer
+      payload:
+        $ref: '#/components/schemas/ShippingInformation'
+  schemas:
+    BillingRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BilledItem'
+        total:
+          type: number
+          format: float
+        date:
+          type: string
+          format: date-time
+    BilledItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+    ShippingInformation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        billing_id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippedItem'
+        shipping_address:
+          type: object
+          properties:
+            street:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+        date:
+          type: string
+          format: date-time
+    ShippedItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer

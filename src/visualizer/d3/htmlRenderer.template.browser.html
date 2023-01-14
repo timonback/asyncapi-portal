@@ -31,8 +31,11 @@ For non-local builds, these pre-compiled javascript files can be used instead of
 
     Promise
         .all([
-            fetchYaml('./asyncapifiles/application-consumer.yaml'),
-            fetchYaml('./asyncapifiles/application-producer.yaml'),
+            fetchYaml('./asyncapifiles/application-1-customer.yaml'),
+            fetchYaml('./asyncapifiles/application-2-order.yaml'),
+            fetchYaml('./asyncapifiles/application-3-billing.yaml'),
+            fetchYaml('./asyncapifiles/application-4-shipping.yaml'),
+            fetchYaml('./asyncapifiles/application-9-notification.yaml'),
         ])
         .then((yamlFiles) => {
             asyncApiPortal.process(yamlFiles).then((data) => {
