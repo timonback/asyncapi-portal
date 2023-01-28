@@ -1,0 +1,16 @@
+path.animated {
+    animation: dashdraw 1s linear infinite;
+    stroke-dasharray: 5;
+}
+
+@-webkit-keyframes dashdraw {
+    from {
+        stroke-dashoffset: 10;
+    }
+}
+
+@keyframes dashdraw {
+    from {
+        stroke-dashoffset: 10;
+    }
+}

@@ -18,13 +18,13 @@ const render = function render(data) {
     .force("link", d3.forceLink(links))
     .force(
       "charge",
-      d3.forceManyBody().strength((d) => (d.type === "topic" ? -450 : -800))
+      d3.forceManyBody().strength((d) => (d.type === "topic" ? 10 : -40))
     )
     .force("x", d3.forceX())
     .force("y", d3.forceY())
     .force(
       "collide",
-      d3.forceCollide((d) => 80)
+      d3.forceCollide((d) => (d.type === "topic" ? 20 : 80))
     );
 
   const svg = d3
@@ -87,7 +87,7 @@ const render = function render(data) {
     .join("path")
     .attr("id", (d) => `path-${d.source.index}-${d.target.index}`)
     .attr("class", (d) => {
-      return `link-${d.source.index} link-${d.target.index}`;
+      return `link-${d.source.index} link-${d.target.index} animated`;
     })
     .attr("stroke", (d) => color(d.type))
     .attr("marker-end", (d) => `url(${new URL(`#arrow-${d.type}`, location)})`);
