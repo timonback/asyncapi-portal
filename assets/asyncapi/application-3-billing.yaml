@@ -15,11 +15,13 @@ servers:
 defaultContentType: application/json
 channels:
   order_created:
+    servers: [ test ]
     publish:
       operationId: processOrder
       message:
         $ref: '#/components/messages/OrderCreated'
   bill_payed:
+    servers: [ test ]
     subscribe:
       operationId: billPayed
       message:

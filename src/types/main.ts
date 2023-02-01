@@ -1,3 +1,5 @@
+import { VisualizerD3Result } from "../visualizer/d3";
+
 export enum LinkDirection {
   "publish",
   "subscribe",
@@ -33,4 +35,13 @@ export interface Graph {
   applications: GraphApplications;
   queues: GraphQueues;
   links: GraphLink[];
+}
+
+export interface AsyncApiPortalResponse {
+  graph: Graph;
+  plugins: {
+    renderer: {
+      d3?: VisualizerD3Result;
+    };
+  };
 }

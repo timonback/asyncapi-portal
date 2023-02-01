@@ -1,12 +1,23 @@
 import { D3Graph } from "../visualizer/d3";
 import { AsyncAPIDocument } from "@asyncapi/parser";
+import { Graph } from "./main";
 
 declare global {
   interface Window {
     asyncApiPortal?: {
-      process?: (yaml: string[]) => Promise<AsyncApiPortalResponse>;
-      d3Renderer?: (data: D3Graph) => void;
+      parser?: {
+        asyncApiParser?: (yaml: string[]) => Promise<Graph>;
+      };
+      process?: (
+        yaml: string[],
+        parser: (yaml: string[]) => Promise<Graph>
+      ) => Promise<AsyncApiPortalResponse>;
+      renderer?: {
+        d3?: (data: D3Graph) => void;
+      };
     };
+
+    // provided by @asyncapi/parser
     AsyncAPIParser: {
       parse: (yaml: string) => Promise<AsyncAPIDocument>;
     };

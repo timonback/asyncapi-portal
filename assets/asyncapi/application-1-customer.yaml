@@ -15,6 +15,7 @@ servers:
 defaultContentType: application/json
 channels:
   customer_changed:
+    servers: [ test ]
     subscribe:
       operationId: updateCustomerInformation
       message:

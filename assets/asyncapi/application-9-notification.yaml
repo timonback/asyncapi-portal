@@ -15,16 +15,19 @@ servers:
 defaultContentType: application/json
 channels:
   customer_changed:
+    servers: [ test ]
     publish:
       operationId: updateCustomerInformation
       message:
         $ref: '#/components/messages/CustomerChanged'
   order_created:
+    servers: [ test ]
     publish:
       operationId: sendOrderConfirmation
       message:
         $ref: '#/components/messages/OrderCreated'
   order_shipped:
+    servers: [ test ]
     publish:
       operationId: sendShippingNotification
       message:

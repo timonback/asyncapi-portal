@@ -16,11 +16,13 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <script src="bundle.browser.js"></script>
-<script src="bundle.visualizer.d3.template.js"></script>
+<script src="bundle.parser.asyncapi.js"></script>
+<script src="bundle.renderer.d3.js"></script>
 <!--
 For non-local builds, these pre-compiled javascript files can be used instead of the two above
 <script src="https://timonback.github.io/asyncapi-portal/output/bundle.browser.js"></script>
-<script src="https://timonback.github.io/asyncapi-portal/output/bundle.visualizer.d3.template.js"></script>
+<script src="https://timonback.github.io/asyncapi-portal/output/bundle.parser.asyncapi.js"></script>
+<script src="https://timonback.github.io/asyncapi-portal/output/bundle.visualizer.d3.js"></script>
 -->
 
 <script type="text/javascript">
@@ -38,10 +40,10 @@ For non-local builds, these pre-compiled javascript files can be used instead of
             fetchYaml('./asyncapifiles/application-9-notification.yaml'),
         ])
         .then((yamlFiles) => {
-            asyncApiPortal.process(yamlFiles).then((data) => {
-                asyncApiPortal.d3Renderer(data.plugins.visualizer.d3.graph);
-            });
-        })
+            return asyncApiPortal.process(yamlFiles, asyncApiPortal.parser.asyncApiParser)
+        }).then((data) => {
+            asyncApiPortal.renderer.d3(data.plugins.renderer.d3.graph);
+        });
 </script>
 <style>
 "PLACEHOLDER-CSS"

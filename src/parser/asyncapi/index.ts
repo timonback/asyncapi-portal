@@ -70,14 +70,15 @@ async function getQueues(
   apis
     .map((api) => {
       return {
-        serverUrl: getServerUrl(api),
+        servers: api.servers(),
+        channels: api.channels(),
         channelNames: api.channelNames(),
       };
     })
     .flatMap((data) => {
       return data.channelNames.map((channelName) => {
         return {
-          serverUrl: data.serverUrl,
+          serverUrl: data.servers[data.channels[channelName].server(0)].url(),
           channelName: channelName,
         };
       });
@@ -155,11 +156,6 @@ async function getLinks(
 
 function getApplicationName(api: AsyncAPIDocument): string {
   return api.info().title();
-}
-
-function getServerUrl(api: AsyncAPIDocument): string {
-  // workaround for now
-  return api.server(api.serverNames()[0]).url();
 }
 
 function getMessages(operation: Operation): string {

@@ -8,14 +8,32 @@ const render = function render(data) {
   const nodes = data.nodes.map((d) => Object.create(d));
   const links = data.links.map((d) => Object.create(d));
   const nodesLookup = {};
-  nodes.forEach((d) => (nodesLookup[d.id] = d));
-  console.log("Nodes", nodes, nodesLookup);
+  const connectionsPerNode = {};
+  nodes.forEach((d) => {
+    nodesLookup[d.id] = d;
+    connectionsPerNode[d.id] = 0;
+  });
+  links.forEach((l) => {
+    connectionsPerNode[l.source.index]++;
+    connectionsPerNode[l.target.index]++;
+  });
+  console.log("Nodes", nodes, nodesLookup, connectionsPerNode);
   console.log("Links", links);
   const color = d3.scaleOrdinal(d3Settings.types, d3.schemeCategory10);
 
   const simulation = d3
     .forceSimulation(nodes)
-    .force("link", d3.forceLink(links))
+    .force(
+      "link",
+      d3.forceLink(links).distance((l) => {
+        const d =
+          20 *
+          (connectionsPerNode[links[l.index].source.index] +
+            connectionsPerNode[links[l.index].target.index]);
+        console.log(l, l.index, links[l.index], d);
+        return d;
+      })
+    )
     .force(
       "charge",
       d3.forceManyBody().strength((d) => (d.type === "topic" ? 10 : -40))
@@ -24,7 +42,7 @@ const render = function render(data) {
     .force("y", d3.forceY())
     .force(
       "collide",
-      d3.forceCollide((d) => (d.type === "topic" ? 20 : 80))
+      d3.forceCollide((d) => (d.type === "topic" ? 40 : 80))
     );
 
   const svg = d3
@@ -234,4 +252,5 @@ const drag = (simulation) => {
 };
 
 window.asyncApiPortal = window.asyncApiPortal || {};
-window.asyncApiPortal.d3Renderer = render;
+window.asyncApiPortal.renderer = window.asyncApiPortal.renderer || {};
+window.asyncApiPortal.renderer.d3 = render;
