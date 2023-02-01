@@ -4,7 +4,7 @@ import { getFileContentInFolder, writeToFile } from "./config";
 import { process } from "./processor";
 import { renderD3Html as renderD3HtmlBrowser } from "./visualizer/d3/htmlRenderer.browser";
 import { renderD3Html as renderD3HtmlNode } from "./visualizer/d3/htmlRenderer.node";
-import { processAsyncApiFiles } from "./parser/asyncapi";
+import { processAsyncApiFiles } from "./parser/relaxedasyncapi";
 
 const asyncApiFileBasePath = path.join(__dirname, "..", "assets", "asyncapi");
 const defaultParser = processAsyncApiFiles;

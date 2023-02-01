@@ -7,6 +7,7 @@ declare global {
     asyncApiPortal?: {
       parser?: {
         asyncApiParser?: (yaml: string[]) => Promise<Graph>;
+        relaxedAsyncApiParser?: (yaml: string[]) => Promise<Graph>;
       };
       process?: (
         yaml: string[],

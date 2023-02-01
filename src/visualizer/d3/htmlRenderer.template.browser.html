@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <title>AsyncApi Portal - Dynamic Renderer</title>
 </head>
@@ -17,11 +17,13 @@
 
 <script src="bundle.browser.js"></script>
 <script src="bundle.parser.asyncapi.js"></script>
+<script src="bundle.parser.relaxedasyncapi.js"></script>
 <script src="bundle.renderer.d3.js"></script>
 <!--
 For non-local builds, these pre-compiled javascript files can be used instead of the two above
 <script src="https://timonback.github.io/asyncapi-portal/output/bundle.browser.js"></script>
 <script src="https://timonback.github.io/asyncapi-portal/output/bundle.parser.asyncapi.js"></script>
+<script src="https://timonback.github.io/asyncapi-portal/output/bundle.parser.relaxedasyncapi.js"></script>
 <script src="https://timonback.github.io/asyncapi-portal/output/bundle.visualizer.d3.js"></script>
 -->
 
@@ -40,7 +42,7 @@ For non-local builds, these pre-compiled javascript files can be used instead of
             fetchYaml('./asyncapifiles/application-9-notification.yaml'),
         ])
         .then((yamlFiles) => {
-            return asyncApiPortal.process(yamlFiles, asyncApiPortal.parser.asyncApiParser)
+            return asyncApiPortal.process(yamlFiles, asyncApiPortal.parser.relaxedAsyncApiParser)
         }).then((data) => {
             asyncApiPortal.renderer.d3(data.plugins.renderer.d3.graph);
         });
