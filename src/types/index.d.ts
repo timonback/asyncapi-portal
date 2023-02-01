@@ -11,7 +11,7 @@ declare global {
       };
       process?: (
         yaml: string[],
-        parser: (yaml: string[]) => Promise<Graph>
+        parser?: (yaml: string[]) => Promise<Graph>
       ) => Promise<AsyncApiPortalResponse>;
       renderer?: {
         d3?: (data: D3Graph) => void;
@@ -22,6 +22,7 @@ declare global {
     AsyncAPIParser: {
       parse: (yaml: string) => Promise<AsyncAPIDocument>;
     };
+    d3: any;
   }
 }
 

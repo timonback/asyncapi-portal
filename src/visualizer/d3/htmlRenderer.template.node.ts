@@ -1,10 +1,12 @@
+const d3 = window.d3;
+
 const d3Settings = {
   types: ["publish", "subscribe"],
   width: 800,
   height: 600,
 };
 
-const render = function render(data) {
+export const render = function render(data) {
   const nodes = data.nodes.map((d) => Object.create(d));
   const links = data.links.map((d) => Object.create(d));
   const nodesLookup = {};
@@ -108,7 +110,11 @@ const render = function render(data) {
       return `link-${d.source.index} link-${d.target.index} animated`;
     })
     .attr("stroke", (d) => color(d.type))
-    .attr("marker-end", (d) => `url(${new URL(`#arrow-${d.type}`, location)})`);
+    .attr(
+      "marker-end",
+      (d) =>
+        `url(${new URL(`#arrow-${d.type}`, window.location as unknown as URL)})`
+    );
 
   var linkLabel = svg
     .append("g")
@@ -250,7 +256,3 @@ const drag = (simulation) => {
     .on("drag", dragged)
     .on("end", dragended);
 };
-
-window.asyncApiPortal = window.asyncApiPortal || {};
-window.asyncApiPortal.renderer = window.asyncApiPortal.renderer || {};
-window.asyncApiPortal.renderer.d3 = render;

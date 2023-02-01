@@ -8,11 +8,11 @@
     "build:browser": "esbuild src/processor/main.browser.ts --bundle --outfile=output/bundle.browser.js",
     "build:parser:asyncapi": "esbuild src/parser/asyncapi/main.browser.ts --bundle --outfile=output/bundle.parser.asyncapi.js",
     "build:parser:relaxedasyncapi": "esbuild src/parser/relaxedasyncapi/main.browser.ts --bundle --outfile=output/bundle.parser.relaxedasyncapi.js",
-    "build:renderer:d3": "esbuild src/visualizer/d3/htmlRenderer.template.node.js --bundle --outfile=output/bundle.renderer.d3.js",
+    "build:renderer:d3": "esbuild src/visualizer/d3/main.browser.ts --bundle --outfile=output/bundle.renderer.d3.js",
     "build:demo": "ts-node --project tsconfig.json --files src/index.node.ts",
     "start": "npm run build && npm run start:server",
     "start:server": "http-server output/",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "lint": "prettier -c ./src",
     "lint:fix": "prettier -w ./src"
   },

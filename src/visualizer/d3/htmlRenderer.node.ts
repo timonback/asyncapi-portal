@@ -8,7 +8,9 @@ export async function renderD3Html(graph: D3Graph): Promise<string> {
   ).toString();
 
   const jsCode = (
-    await fs.readFile(path.join(__dirname, "htmlRenderer.template.node.js"))
+    await fs.readFile(
+      path.join(__dirname, "..", "..", "..", "output", "bundle.renderer.d3.js")
+    )
   ).toString();
   const cssCode = (
     await fs.readFile(path.join(__dirname, "htmlRenderer.template.css"))
