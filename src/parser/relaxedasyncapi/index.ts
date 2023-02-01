@@ -60,19 +60,16 @@ export async function processAsyncApiFiles(
     }
     return yaml.safeLoad(asyncApiAsString);
   });
-  console.log("relaxedAsyncApiParser", asyncApis);
 
   const servers = getServers(asyncApis);
   const applications = getApplications(asyncApis);
   const queues = getQueues(asyncApis, servers);
-  const output = {
+  return {
     servers: servers,
     applications: applications,
     queues: queues,
     links: getLinks(asyncApis, applications, queues),
   };
-  console.log("relaxedAsyncApiParser parsed", output);
-  return output;
 }
 
 function getServers(apis: RelaxedAsyncApiSchema[]): GraphServers {
