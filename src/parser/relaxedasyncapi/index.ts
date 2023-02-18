@@ -26,13 +26,7 @@ interface RelaxedAsyncApiOperationSchema {
 }
 
 interface RelaxedAsyncApiComponentSchema {
-  [keyof: string]: Map<
-    string,
-    {
-      name?: string;
-      title?: string;
-    }
-  >;
+  [keyof: string]: RelaxedAsyncApiComponentSchema | string;
 }
 
 interface RelaxedAsyncApiSchema {
@@ -217,16 +211,25 @@ function getMessageName(
   if (message.name) {
     return message.name;
   }
-  const refSegments = message.$ref?.substring(2).split("/");
-  if (refSegments?.length == 3) {
-    const title = components[refSegments[1]][refSegments[2]].title;
-    if (title) {
-      return title;
-    }
-    const name = components[refSegments[1]][refSegments[2]].name;
-    if (name) {
-      return name;
-    }
+
+  let refSegments = message.$ref?.substring(2).split("/");
+  refSegments?.shift();
+  let segment: RelaxedAsyncApiComponentSchema | string | undefined = components;
+  while (
+    segment !== undefined &&
+    refSegments !== undefined &&
+    refSegments.length > 0
+  ) {
+    const index = refSegments.shift() as string;
+    segment = segment[index];
   }
-  return "message name not found";
+
+  if (segment["title"]) {
+    return segment["title"];
+  }
+  if (segment["name"]) {
+    return segment["name"];
+  }
+
+  return "unknown";
 }

@@ -1,3 +1,5 @@
+import { D3Graph } from "./index";
+
 const d3 = window.d3;
 
 const d3Settings = {
@@ -6,9 +8,9 @@ const d3Settings = {
   height: 600,
 };
 
-export const render = function render(data) {
-  const nodes = data.nodes.map((d) => Object.create(d));
-  const links = data.links.map((d) => Object.create(d));
+export const render = function render(data: D3Graph) {
+  const nodes: D3Graph["nodes"] = data.nodes.map((d) => Object.create(d));
+  const links: D3Graph["links"] = data.links.map((d) => Object.create(d));
   const nodesLookup = {};
   const connectionsPerNode = {};
   nodes.forEach((d) => {
@@ -19,28 +21,61 @@ export const render = function render(data) {
     connectionsPerNode[l.source.index]++;
     connectionsPerNode[l.target.index]++;
   });
+  const links2 = data.links.map((d) =>
+    Object.create({
+      source: nodesLookup[d.source.index],
+      target: nodesLookup[d.target.index],
+    })
+  );
   console.log("Nodes", nodes, nodesLookup, connectionsPerNode);
-  console.log("Links", links);
+  console.log("Links", links, links2);
   const color = d3.scaleOrdinal(d3Settings.types, d3.schemeCategory10);
 
   const simulation = d3
     .forceSimulation(nodes)
+    //.force("center", d3.forceCenter(0, 0))
+    // .force(
+    //   "charge",
+    //   d3.forceManyBody().strength((d) => (d.type === "topic" ? -10 : -40))
+    // )
+    // .force(
+    //   "link",
+    //   d3
+    //     .forceLink()
+    //     .links(links2)
+    //     .distance((l) => {
+    //       const d =
+    //         40 *
+    //         (connectionsPerNode[links[l.index].source.index] +
+    //           connectionsPerNode[links[l.index].target.index]);
+    //       console.log(l, l.index, links[l.index], d);
+    //       return d;
+    //     })
+    // )
+    // .force("center", d3.forceCenter())
+    // .force(
+    //   "link",
+    //   d3.forceLink(links).distance((l) => {
+    //     const d =
+    //       30 *
+    //       (connectionsPerNode[links[l.index].source.index] +
+    //         connectionsPerNode[links[l.index].target.index]);
+    //     console.log(l, l.index, links[l.index], d);
+    //     return d;
+    //   })
+    // )
+    // .force(
+    //   "charge",
+    //   d3.forceManyBody().strength((d) => (d.type === "topic" ? 10 : -40))
+    // )
     .force(
-      "link",
-      d3.forceLink(links).distance((l) => {
-        const d =
-          20 *
-          (connectionsPerNode[links[l.index].source.index] +
-            connectionsPerNode[links[l.index].target.index]);
-        console.log(l, l.index, links[l.index], d);
-        return d;
+      "x",
+      d3.forceX().x((d) => {
+        return d.type === "topic"
+          ? 0 - d3Settings.width / 4
+          : d3Settings.width / 4;
       })
     )
-    .force(
-      "charge",
-      d3.forceManyBody().strength((d) => (d.type === "topic" ? 10 : -40))
-    )
-    .force("x", d3.forceX())
     .force("y", d3.forceY())
     .force(
       "collide",
@@ -132,13 +167,13 @@ export const render = function render(data) {
     .attr("stroke-width", 0.2)
     .attr("font-size", "smaller")
     .attr("class", (link) => {
-      var source = links[link.index].source.index;
-      var target = links[link.index].target.index;
+      var source = link.source.index;
+      var target = link.target.index;
       return `linkLabel-${source} linkLabel-${target}`;
     })
     .attr("href", (link) => {
-      var source = links[link.index].source.index;
-      var target = links[link.index].target.index;
+      var source = link.source.index;
+      var target = link.target.index;
       return `#path-${source}-${target}`;
     })
     .text((link) => {
@@ -190,12 +225,12 @@ export const render = function render(data) {
 
   const nodeLabels = node.append("text").attr("x", 8).attr("y", "0.31em");
   nodeLabels.append("tspan").text((node) => node.name);
-  nodeLabels
-    .append("tspan")
-    .text((node) => node.type)
-    .attr("font-size", "bigger")
-    .attr("x", 10)
-    .attr("y", "1.31em");
+  // nodeLabels
+  //   .append("tspan")
+  //   .text((node) => node.type)
+  //   .attr("font-size", "bigger")
+  //   .attr("x", 10)
+  //   .attr("y", "1.31em");
   nodeLabels
     .clone(true)
     .lower()
