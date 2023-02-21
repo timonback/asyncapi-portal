@@ -77,8 +77,16 @@ async function getQueues(
     })
     .flatMap((data) => {
       return data.channelNames.map((channelName) => {
+        let serverKey = "unknown.com"
+        if(data.channels[channelName].servers !== undefined) {
+          serverKey = data.channels[channelName].servers[0]
+        } else if(data.channels[channelName]?.subscribe?.bindings !== undefined) {
+          serverKey = Object.keys(data.channels[channelName].subscribe.bindings)[0]
+        } else if(data.channels[channelName]?.publish?.bindings !== undefined) {
+          serverKey = Object.keys(data.channels[channelName].publish.bindings)[0]
+        }
         return {
-          serverUrl: data.servers[data.channels[channelName].server(0)].url(),
+          serverUrl: data.servers[serverKey].url,
           channelName: channelName,
         };
       });
